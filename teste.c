@@ -9,7 +9,7 @@ int main(void) {
 
   //escreve_grafo(g);
 
-  int n = n_arestas(g);
+  int n = regular(g);
   printf("%d   \n",n);
 
   destroi_grafo(g);

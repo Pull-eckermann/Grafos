@@ -11,7 +11,8 @@ void destroi_grafo(grafo g) {
 }
 //------------------------------------------------------------------------------
 grafo escreve_grafo(grafo g) {
-  return agwrite(g, stdout);
+  agwrite(g, stdout);
+  return g;
 }
 
 // -----------------------------------------------------------------------------
@@ -30,12 +31,12 @@ int n_vertices(grafo g) {
 int n_arestas(grafo g) {
   int cont = 0;
   Agnode_t * v;  //Declara o vértice
-  
+
   //Itera sobre os vértices
   for (v = agfstnode(g); v; v = agnxtnode(g,v)) { 
       cont += grau(v,g);
   }
-
+  //Retorna a soma de todos os graus de vértices /2 = número de arestas
   return cont/2;
 }
 
@@ -64,9 +65,20 @@ int grau_medio(grafo g) {
 }
 
 // -----------------------------------------------------------------------------
-int regular(grafo g) {
-  
-  return 0;
+int regular(grafo g) { 
+  vertice v = agfstnode(g); //Declara v e atribui um vértice qualquer a ele
+  int aux = grau(v,g);      //Recebe um grau genérico para comparar
+  int true;
+
+  //Itera sobre os vértices
+  for (v = agfstnode(g); v; v = agnxtnode(g,v)) { 
+      if(aux == grau(v,g))
+        true = 1;
+      else
+        true = 0;
+  }
+  //Será tru se todos os vértices tiverem grau == aux
+  return true;  
 }
 
 // -----------------------------------------------------------------------------
