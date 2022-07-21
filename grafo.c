@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include "grafo.h"
 
 //------------------------------------------------------------------------------
@@ -48,14 +49,32 @@ int grau(vertice v, grafo g) {
 
 // -----------------------------------------------------------------------------
 int grau_maximo(grafo g)  {
-  
-  return 0;
+  int max, grau_n;
+  vertice n;
+  max = 0;
+
+  for(n = agfstnode(g); n; n = agnxtnode(g, n))
+  {
+    grau_n = grau(n, g);
+    if(grau_n > max)
+      max = grau_n;
+  }
+  return max;
 }
 
 // -----------------------------------------------------------------------------
 int grau_minimo(grafo g)  {
-  
-  return 0;
+  int min, grau_n;
+  vertice n;
+  min = (int)INFINITY;
+
+  for(n = agfstnode(g); n; n = agnxtnode(g, n))
+  {
+    grau_n = grau(n, g);
+    if(grau_n < min)
+      min = grau_n;
+  }
+  return min;
 }
 
 // -----------------------------------------------------------------------------
@@ -83,11 +102,16 @@ int regular(grafo g) {
 
 // -----------------------------------------------------------------------------
 int completo(grafo g) {
-  
-  return 0;
+  int Vg, Eg;
+
+  Vg = n_vertices(g);
+  Eg = n_arestas(g);
+
+  return (Eg == (Vg*(Vg-1))/2);
 }
 
 // -----------------------------------------------------------------------------
+// grafo tem um unico componente (pedacos separados no grafo)
 int conexo(grafo g) {
   
   return 0;
@@ -113,7 +137,7 @@ int **matriz_adjacencia(grafo g) {
 
 // -----------------------------------------------------------------------------
 grafo complemento(grafo g) {
-
+  
   return NULL;
 }
 
