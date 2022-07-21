@@ -16,8 +16,14 @@ grafo escreve_grafo(grafo g) {
 
 // -----------------------------------------------------------------------------
 int n_vertices(grafo g) {
-  
-  return 0;
+  int num_v;
+  vertice n;
+
+  num_v = 0;
+  for(n = agfstnode(g); n; n=agnxtnode(g, n))
+    num_v++;
+
+  return num_v;
 }
 
 // --------------------------- aresta--------------------------------------------------
@@ -25,6 +31,7 @@ int n_arestas(grafo g) {
   int cont = 0;
   Agnode_t * v;  //Declara o vértice
   
+  //Itera sobre os vértices
   for (v = agfstnode(g); v; v = agnxtnode(g,v)) { 
       cont += grau(v,g);
   }
@@ -34,8 +41,8 @@ int n_arestas(grafo g) {
 
 // -----------------------------------------------------------------------------
 int grau(vertice v, grafo g) {
-  
-  return 0;
+  // aresta-in = True && aresta-out = True para nao direcionado
+  return agdegree(g, v, 1, 1);
 }
 
 // -----------------------------------------------------------------------------
@@ -94,7 +101,7 @@ int **matriz_adjacencia(grafo g) {
 
 // -----------------------------------------------------------------------------
 grafo complemento(grafo g) {
-  
+
   return NULL;
 }
 
