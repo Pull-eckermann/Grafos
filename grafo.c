@@ -9,18 +9,25 @@ grafo le_grafo(void) {
 //------------------------------------------------------------------------------
 void destroi_grafo(grafo g) {
   
-  return 1;
+  // return 1;
 }
 //------------------------------------------------------------------------------
 grafo escreve_grafo(grafo g) {
-  
-  return agwrite(g, stdout);
+  agwrite(g, stdout);
+  return g;
+  // return agwrite(g, stdout);
 }
 
 // -----------------------------------------------------------------------------
 int n_vertices(grafo g) {
-  
-  return 0;
+  int num_v;
+  vertice n;
+
+  num_v = 0;
+  for(n = agfstnode(g); n; n=agnxtnode(g, n))
+    num_v++;
+
+  return num_v;
 }
 
 // -----------------------------------------------------------------------------
@@ -31,8 +38,8 @@ int n_arestas(grafo g) {
 
 // -----------------------------------------------------------------------------
 int grau(vertice v, grafo g) {
-  
-  return 0;
+  // aresta-in = True && aresta-out = True para nao direcionado
+  return agdegree(g, v, 1, 1);
 }
 
 // -----------------------------------------------------------------------------
@@ -91,7 +98,7 @@ int **matriz_adjacencia(grafo g) {
 
 // -----------------------------------------------------------------------------
 grafo complemento(grafo g) {
-  
+
   return NULL;
 }
 
