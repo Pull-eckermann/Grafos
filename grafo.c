@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <math.h>
 #include "grafo.h"
 
 //------------------------------------------------------------------------------
@@ -129,14 +127,81 @@ int n_triangulos(grafo g) {
 }
 
 // -----------------------------------------------------------------------------
+// precisa dar free na matriz
 int **matriz_adjacencia(grafo g) {
-  
-  return NULL;
+  // para grafos nao direcionados somente
+  vertice u, v;
+
+  unsigned int size, i, j;
+  int **MA;
+  size = (unsigned int) n_vertices(g);
+
+  MA = malloc(size*sizeof(int*) + size*size*sizeof(int));
+  if(!MA) 
+    return NULL;
+  MA[0] = (int*) (MA + size) ;  // ajusta o ponteiro da primeira linha
+  for (i=1; i < size; i++)      // ajusta os ponteiros das demais linhas (i > 0)
+    MA[i] = MA[0] + (i * size) ;// pra facil indexacao & somente free(ma)
+
+
+  // ma[i][j] = 0, se nao existe aresta {i, j}
+  // ma[i][j] = 1, se existe aresta {i, j}
+  for(i = 0, u = agfstnode(g); u; u = agnxtnode(g, u), i++){
+    for(j = 0, v = agfstnode(g); v; v = agnxtnode(g, v), j++){
+      // se {u, v} sao nodos diferentes e exite aresta
+      if(i != j && agedge(g, u, v, NULL, 0) != NULL)
+        MA[i][j] = 1;
+      else 
+        MA[i][j] = 0;
+    }
+  }
+
+  return MA;
 }
 
 // -----------------------------------------------------------------------------
+// fazer triangular?
 grafo complemento(grafo g) {
-  
-  return NULL;
-}
+  int **ma = matriz_adjacencia(g);
+  int i, j, size, i_add, i_rm;
+  size = n_vertices(g);
+  size = (size*(size-1));
+  i_add = 0;
+  i_rm = 0;
 
+  vertice u, v, u_add[size], v_add[size], u_rm[size], v_rm[size];
+  Agedge_t *e;
+
+  // GUARDA OPERACOES
+  for(u = agfstnode(g); u; u = agnxtnode(g, u)){
+    for(v = agfstnode(g); v; v = agnxtnode(g, v)){
+    // se {u, v} sao nodos diferentes e exite aresta
+      if(AGID(u) != AGID(v))
+      {
+        e = agedge(g, u, v, NULL, 0);   // busca aresta
+        if(!e){
+          u_add[i_add] = u;      // aresta nn existe
+          v_add[i_add] = v;      // aresta nn existe
+          i_add++;
+        }
+        else{
+          u_rm[i_rm] = u;      // aresta nn existe
+          v_rm[i_rm] = v;      // aresta nn existe
+          i_rm++;
+        }
+      }
+    }
+  }
+
+  // REALIZA OPERACOES
+  for(i = 0; i < i_add; i++)
+    agedge(g, u_add[i], v_add[i], NULL, 1); // create edges
+  for(j = 0; j < i_rm-1; j++){
+    e = agedge(g, u_rm[j], v_rm[j], NULL, 0);
+    if(e)
+      agdeledge(g, e);                      // delete edges
+  }
+
+  free(ma);
+  return g;
+}
