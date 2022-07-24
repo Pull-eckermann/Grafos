@@ -87,14 +87,12 @@ int grau_medio(grafo g) {
 int regular(grafo g) { 
   vertice v = agfstnode(g); //Declara v e atribui um vértice qualquer a ele
   int aux = grau(v,g);      //Recebe um grau genérico para comparar
-  int true;
+  int true = 1;
 
   //Itera sobre os vértices
   for (v = agfstnode(g); v; v = agnxtnode(g,v)) { 
-      if(aux == grau(v,g))
-        true = 1;
-      else
-        true = 0;
+      if(aux != grau(v,g))
+        return 0; // caso exista grau diferente, para de procurar
   }
   //Será tru se todos os vértices tiverem grau == aux
   return true;  
@@ -107,6 +105,7 @@ int completo(grafo g) {
   Vg = n_vertices(g);
   Eg = n_arestas(g);
 
+  // num combinacao de todos os vertices em 2 == num arestas
   return (Eg == (Vg*(Vg-1))/2);
 }
 
