@@ -162,14 +162,19 @@ int **matriz_adjacencia(grafo g) {
 // -----------------------------------------------------------------------------
 // fazer triangular?
 grafo complemento(grafo g) {
+  unsigned int size = (unsigned int) n_vertices(g);
   int **ma = matriz_adjacencia(g);
-  int i, j, size, i_add, i_rm;
-  size = n_vertices(g);
+  int i, j, i_add, i_rm;
+  
   size = (size*(size-1));
   i_add = 0;
   i_rm = 0;
 
-  vertice u, v, u_add[size], v_add[size], u_rm[size], v_rm[size];
+  Agnode_t *u, *v, **u_add, **v_add, **u_rm, **v_rm;
+  u_add = malloc(size*sizeof(Agnode_t*));
+  v_add = malloc(size*sizeof(Agnode_t*));
+  u_rm  = malloc(size*sizeof(Agnode_t*));
+  v_rm  = malloc(size*sizeof(Agnode_t*));
   Agedge_t *e;
 
   // GUARDA OPERACOES
@@ -203,5 +208,9 @@ grafo complemento(grafo g) {
   }
 
   free(ma);
+  free(u_add);
+  free(v_add);
+  free(u_rm);
+  free(v_rm);
   return g;
 }

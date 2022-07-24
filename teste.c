@@ -24,7 +24,7 @@ int main(void) {
 
   // matriz de complemento de G
   printf("MC:\n");
-  grafo c = complemento(g);
+  g = complemento(g);
   int **mc = matriz_adjacencia(g);
   for(int i = 0; i < size; i++){
     for(int j = 0; j < size; j++){
