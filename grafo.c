@@ -173,31 +173,34 @@ int n_triangulos(grafo g) {
   mult = malloc(u_size*sizeof(int*) + u_size*u_size*sizeof(int));
 
   aux[0] = (int*) (aux + size) ;  // ajusta o ponteiro da primeira linha
-  for (int i=1; i < size; i++)      // ajusta os ponteiros das demais linhas (i > 0)
+  for (int i=1; i < u_size; i++)      // ajusta os ponteiros das demais linhas (i > 0)
     aux[i] = aux[0] + (i * size) ;
 
-  mult[0] = (int*) (mult + size) ;  // ajusta o ponteiro da primeira linha
-  for (int i=1; i < size; i++)      // ajusta os ponteiros das demais linhas (i > 0)
+  mult[0] = (int*) (mult + size) ;
+  for (int i=1; i < u_size; i++)
     mult[i] = mult[0] + (i * size) ;
 
-  for (int i = 0; i < size; i++)
-    for (int j = 0; j < size; j++)
+  //Copia elementos da matriz ma para aux
+  for (int i = 0; i < u_size; i++)
+    for (int j = 0; j < u_size; j++)
       aux[i][j] = ma[i][j];
 
-  for (int i = 0; i < size; i++)
-    for (int j = 0; j < size; j++)
-      for (int k = 0; k < size; k++)
+  //Eleva ma a potencia de 2
+  for (int i = 0; i < u_size; i++)
+    for (int j = 0; j < u_size; j++)
+      for (int k = 0; k < u_size; k++)
         mult[i][j] += ma[i][k]*aux[k][j];
 
-  for (int i = 0; i < size; i++)
-    for (int j = 0; j < size; j++)
-      for (int k = 0; k < size; k++)
+  //Eleva ma a potencia de 3
+  for (int i = 0; i < u_size; i++)
+    for (int j = 0; j < u_size; j++)
+      for (int k = 0; k < u_size; k++)
         aux[i][j] += mult[i][k]*ma[k][j];
-
+  //Calcula o trace
   int trace = 0;
-  for (int i = 0; i < size; i++)
+  for (int i = 0; i < u_size; i++)
     trace += aux[i][i];
-
+  //Libera as matrizes
   free(aux);
   free(mult);
   free(ma);
