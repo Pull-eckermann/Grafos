@@ -77,8 +77,15 @@ int grau_minimo(grafo g)  {
 
 // -----------------------------------------------------------------------------
 int grau_medio(grafo g) {
-  
-  return 0;
+  int cont = 0;
+  Agnode_t * v;  //Declara o vértice
+  //Soma todos os graus
+  for (v = agfstnode(g); v; v = agnxtnode(g,v)) { 
+      cont += grau(v,g);
+  }
+  //Divide a soma dos graus pelo número de vértices
+  cont = cont/n_vertices(g);
+  return cont;
 }
 
 // -----------------------------------------------------------------------------
@@ -144,8 +151,40 @@ int bipartido(grafo g) {
 
 // -----------------------------------------------------------------------------
 int n_triangulos(grafo g) {
-  
-  return 0;
+  int **ma = matriz_adjacencia(g);
+  int size = (unsigned int) n_vertices(g);
+  int **aux = malloc(size*sizeof(int*) + size*size*sizeof(int));
+  aux[0] = (int*) (aux + size) ;  // ajusta o ponteiro da primeira linha
+  for (int i=1; i < size; i++)      // ajusta os ponteiros das demais linhas (i > 0)
+    aux[i] = aux[0] + (i * size) ;
+
+  int **mult = malloc(size*sizeof(int*) + size*size*sizeof(int));
+  mult[0] = (int*) (mult + size) ;  // ajusta o ponteiro da primeira linha
+  for (int i=1; i < size; i++)      // ajusta os ponteiros das demais linhas (i > 0)
+    mult[i] = mult[0] + (i * size) ;
+
+  for (int i = 0; i < size; i++)
+    for (int j = 0; j < size; j++)
+      aux[i][j] = ma[i][j];
+
+  for (int i = 0; i < size; i++)
+    for (int j = 0; j < size; j++)
+      for (int k = 0; k < size; k++)
+        mult[i][j] += ma[i][k]*aux[k][j];
+
+  for (int i = 0; i < size; i++)
+    for (int j = 0; j < size; j++)
+      for (int k = 0; k < size; k++)
+        aux[i][j] += mult[i][k]*ma[k][j];
+
+  int trace = 0;
+  for (int i = 0; i < size; i++)
+    trace += aux[i][i];
+
+  free(aux);
+  free(mult);
+  free(ma);
+  return trace/6;
 }
 
 // -----------------------------------------------------------------------------
