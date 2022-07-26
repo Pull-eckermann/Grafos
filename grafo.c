@@ -143,6 +143,7 @@ int conexo(grafo g) {
 }
 
 // -----------------------------------------------------------------------------
+// https://www.geeksforgeeks.org/bipartite-graph/ - exercicio
 int bipartido(grafo g) {
   int **ma, *color, size;
   size = n_vertices(g);
