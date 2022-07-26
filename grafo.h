@@ -94,4 +94,10 @@ int **matriz_adjacencia(grafo g);
 
 grafo complemento(grafo g);
 
+
+//------------------------------------------------------------------------------
+// funcao auxiliar para computar conectividade de um grafo
+void DFSearch(int i, int size, int *visitado, int **matriz_adjacencia);
+
+
 #endif

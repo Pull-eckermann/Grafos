@@ -109,9 +109,31 @@ int completo(grafo g) {
 
 // -----------------------------------------------------------------------------
 // grafo tem um unico componente (pedacos separados no grafo)
+// https://www.geeksforgeeks.org/connected-components-in-an-undirected-graph/
+// https://www.geeksforgeeks.org/program-to-count-number-of-connected-components-in-an-undirected-graph/
 int conexo(grafo g) {
-  
-  return 0;
+  int **ma, *visitado, size, n_componentes;
+  n_componentes = 0;
+  size = n_vertices(g);
+  ma = matriz_adjacencia(g);
+  visitado = malloc(size*sizeof(int));
+
+  printf("ok");
+  // inicializa todo vertice como nao visitado
+  for(int i = 0; i < size; i++)
+    visitado[i] = 0;
+
+  // recursivamente visita vertices adjacentes
+  for(int i = 0; i < size; i++){
+    if(visitado[i] == 0){
+      DFSearch(i, size, visitado, ma);
+      n_componentes++;
+    }
+  }
+
+  free(ma);
+  free(visitado);
+  return n_componentes;
 }
 
 // -----------------------------------------------------------------------------
@@ -213,4 +235,17 @@ grafo complemento(grafo g) {
   free(u_rm);
   free(v_rm);
   return g;
+}
+
+// ======= Funcao Auxiliar Conexo ======= //
+void DFSearch(int i, int size, int *visitado, int **matriz_adjacencia)
+{  
+  visitado[i] = 1;    // marca i como visitado
+
+
+  // recorrencia para todo vertice adjacente a i
+  for(int j = 0; j < size; j++){
+    if (matriz_adjacencia[i][j] == 1 && !visitado[j])
+      DFSearch(j, size, visitado, matriz_adjacencia);
+  }
 }
