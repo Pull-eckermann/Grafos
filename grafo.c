@@ -123,9 +123,8 @@ int conexo(grafo g) {
   n_componentes = 0;
   size = n_vertices(g);
   ma = matriz_adjacencia(g);
-  visitado = malloc(size*sizeof(int));
+  visitado = malloc( ((unsigned int) size) *sizeof(int));
 
-  printf("ok");
   // inicializa todo vertice como nao visitado
   for(int i = 0; i < size; i++)
     visitado[i] = 0;
@@ -145,20 +144,37 @@ int conexo(grafo g) {
 
 // -----------------------------------------------------------------------------
 int bipartido(grafo g) {
-  
+  int **ma, *color, size;
+  size = n_vertices(g);
+  ma = matriz_adjacencia(g);
+  color = malloc(((unsigned int) size) * sizeof(int));
+
+  for(int i = 0; i < size; i++)
+      color[i] = -1;
+        
+  //start is vertex 0;
+  int pos = 0;
+  // two colors 1 and 0
+  return colorGraph(ma,color,size,pos,1);
+    
   return 0;
 }
 
 // -----------------------------------------------------------------------------
 int n_triangulos(grafo g) {
-  int **ma = matriz_adjacencia(g);
-  int size = (unsigned int) n_vertices(g);
-  int **aux = malloc(size*sizeof(int*) + size*size*sizeof(int));
+  int **ma, **aux, **mult, size;
+  unsigned int u_size;
+  
+  size = n_vertices(g);
+  ma = matriz_adjacencia(g);
+  u_size = (unsigned int) size;
+  aux = malloc(u_size*sizeof(int*) + u_size*u_size*sizeof(int));
+  mult = malloc(u_size*sizeof(int*) + u_size*u_size*sizeof(int));
+
   aux[0] = (int*) (aux + size) ;  // ajusta o ponteiro da primeira linha
   for (int i=1; i < size; i++)      // ajusta os ponteiros das demais linhas (i > 0)
     aux[i] = aux[0] + (i * size) ;
 
-  int **mult = malloc(size*sizeof(int*) + size*size*sizeof(int));
   mult[0] = (int*) (mult + size) ;  // ajusta o ponteiro da primeira linha
   for (int i=1; i < size; i++)      // ajusta os ponteiros das demais linhas (i > 0)
     mult[i] = mult[0] + (i * size) ;
@@ -287,4 +303,29 @@ void DFSearch(int i, int size, int *visitado, int **matriz_adjacencia)
     if (matriz_adjacencia[i][j] == 1 && !visitado[j])
       DFSearch(j, size, visitado, matriz_adjacencia);
   }
+}
+
+
+// ======== Funcao auxiliar Bipartido ======== //
+int colorGraph(int **matrix, int color[], int size, int pos, int c)
+{
+    if(color[pos] != -1 && color[pos] !=c)
+        return 0;
+         
+    // color this pos as c and all its neighbours and 1-c
+    color[pos] = c;
+    int ans = 1;
+    for(int i=0;i<size;i++){
+        if(matrix[pos][i]){
+            if(color[i] == -1)
+                ans &= colorGraph(matrix,color,size,i,1-c);
+                 
+            if(color[i] !=-1 && color[i] != 1-c)
+                return 0;
+        }
+        if (!ans)
+            return 0;
+    }
+     
+    return 1;
 }

@@ -100,4 +100,10 @@ grafo complemento(grafo g);
 void DFSearch(int i, int size, int *visitado, int **matriz_adjacencia);
 
 
+//------------------------------------------------------------------------------
+// funcoes & struct auxiliar para computar bipartidade de um grafo
+int colorGraph(int **matrix, int color[], int size, int pos, int c);
+
+
+
 #endif
