@@ -116,8 +116,6 @@ int completo(grafo g) {
 
 // -----------------------------------------------------------------------------
 // grafo tem um unico componente (pedacos separados no grafo)
-// https://www.geeksforgeeks.org/connected-components-in-an-undirected-graph/
-// https://www.geeksforgeeks.org/program-to-count-number-of-connected-components-in-an-undirected-graph/
 int conexo(grafo g) {
   int **ma, *visitado, size, n_componentes;
   n_componentes = 0;
@@ -143,7 +141,6 @@ int conexo(grafo g) {
 }
 
 // -----------------------------------------------------------------------------
-// https://www.geeksforgeeks.org/bipartite-graph/ - exercicio
 int bipartido(grafo g) {
   int **ma, *color, size;
   size = n_vertices(g);
@@ -173,42 +170,42 @@ int n_triangulos(grafo g) {
   mult = malloc(u_size*sizeof(int*) + u_size*u_size*sizeof(int));
 
   aux[0] = (int*) (aux + size) ;  // ajusta o ponteiro da primeira linha
-  for (int i=1; i < u_size; i++)      // ajusta os ponteiros das demais linhas (i > 0)
+  for (int i=1; i < size; i++)      // ajusta os ponteiros das demais linhas (i > 0)
     aux[i] = aux[0] + (i * size) ;
 
   mult[0] = (int*) (mult + size) ;
-  for (int i=1; i < u_size; i++)
+  for (int i=1; i < size; i++)
     mult[i] = mult[0] + (i * size) ;
 
   //Copia elementos da matriz ma para aux
-  for (int i = 0; i < u_size; i++)
-    for (int j = 0; j < u_size; j++)
+  for (int i = 0; i < size; i++)
+    for (int j = 0; j < size; j++)
       aux[i][j] = ma[i][j];
 
   //Eleva ma a potencia de 2
-  for (int i = 0; i < u_size; i++)
-    for (int j = 0; j < u_size; j++)
-      for (int k = 0; k < u_size; k++)
+  for (int i = 0; i < size; i++)
+    for (int j = 0; j < size; j++)
+      for (int k = 0; k < size; k++)
         mult[i][j] += ma[i][k]*aux[k][j];
 
   //Eleva ma a potencia de 3
-  for (int i = 0; i < u_size; i++)
-    for (int j = 0; j < u_size; j++)
-      for (int k = 0; k < u_size; k++)
+  for (int i = 0; i < size; i++)
+    for (int j = 0; j < size; j++)
+      for (int k = 0; k < size; k++)
         aux[i][j] += mult[i][k]*ma[k][j];
   //Calcula o trace
   int trace = 0;
-  for (int i = 0; i < u_size; i++)
+  for (int i = 0; i < size; i++)
     trace += aux[i][i];
   //Libera as matrizes
   free(aux);
   free(mult);
   free(ma);
   return trace/6;
+
 }
 
 // -----------------------------------------------------------------------------
-// precisa dar free na matriz
 int **matriz_adjacencia(grafo g) {
   // para grafos nao direcionados somente
   vertice u, v;
@@ -241,7 +238,6 @@ int **matriz_adjacencia(grafo g) {
 }
 
 // -----------------------------------------------------------------------------
-// fazer triangular?
 grafo complemento(grafo g) {
   unsigned int size = (unsigned int) n_vertices(g);
   int **ma = matriz_adjacencia(g);
