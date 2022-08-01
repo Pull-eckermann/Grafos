@@ -267,8 +267,8 @@ grafo complemento(grafo g) {
           i_add++;
         }
         else{
-          u_rm[i_rm] = u;      // aresta nn existe
-          v_rm[i_rm] = v;      // aresta nn existe
+          u_rm[i_rm] = u;      // aresta existe
+          v_rm[i_rm] = v;      // aresta existe
           i_rm++;
         }
       }
